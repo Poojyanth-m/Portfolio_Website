@@ -54,18 +54,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-4 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-12"
+      className="fixed top-4 left-0 right-0 z-40 flex items-center justify-center px-6 md:px-12 pointer-events-none"
     >
-      {/* Signature Logo */}
-      <Link
-        href="/"
-        className={`text-4xl md:text-5xl text-white hover:text-white/80 transition-all duration-500 drop-shadow-[0_0_12px_rgba(255,255,255,0.15)] hover:drop-shadow-[0_0_24px_rgba(255,255,255,0.5)] hover:scale-105 origin-left ${signatureFont.className}`}
-      >
-        Poojyanth
-      </Link>
-
       {/* Nav links — absolutely centered glass pill with scrollspy */}
-      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-1 px-3 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
+      <div className="hidden md:flex items-center gap-1 px-3 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.4)] pointer-events-auto">
         {navItems.map((item) => {
           const isActive = activeSection === item.id;
           return (
@@ -98,14 +90,6 @@ export default function Navbar() {
           );
         })}
       </div>
-
-      {/* CTA */}
-      <a
-        href="mailto:poojyanthm@gmail.com"
-        className="text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 tracking-wide"
-      >
-        Hire Me
-      </a>
     </motion.nav>
   );
 }

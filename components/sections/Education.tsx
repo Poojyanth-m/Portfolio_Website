@@ -1,33 +1,67 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const certs = [
-  "Google — Crash Course on Python",
-  "AWS — Solutions Architecture Job Simulation",
-  "freeCodeCamp — JavaScript Algorithms & Data Structures",
-  "Coursera — Frontend for Java Full Stack Development",
-  "LinkedIn Learning — Practical GitHub Actions",
-  "Postman — API Fundamentals Student Expert",
-  "TCS iON — Career Edge",
-];
+import { InteractiveTravelCard } from "@/components/ui/3d-card";
+import MagicBento from "@/components/ui/MagicBento";
 
 const education = [
   {
-    degree: "B.Tech — Computer Science Engineering (AI & ML Specialization)",
+    degree: "B.Tech — Computer Science Engineering",
     institution: "Dayananda Sagar University, Bengaluru",
     period: "2022 – 2026",
+    badge: "Current",
+    actionText: "AI & ML Specialization",
+    href: "https://www.dsu.edu.in/",
   },
   {
     degree: "Pre-University College (PUC)",
     institution: "Anantha PU College, Arsikere",
     period: "2020 – 2022",
+    badge: "Completed",
+    actionText: "Science Stream",
+    href: undefined,
   },
   {
     degree: "Secondary Education (Class X)",
     institution: "Anantha International School, Arsikere",
     period: "2020",
+    badge: "Completed",
+    actionText: "CBSE Board",
+    href: undefined,
   },
+];
+
+const certData = [
+  {
+    title: "Crash Course on Python",
+    description: "Programming fundamentals and automation via Python",
+    label: "Google"
+  },
+  {
+    title: "Solutions Architecture",
+    description: "Job simulation covering cloud computing and AWS services",
+    label: "AWS"
+  },
+  {
+    title: "JS Algorithms & Data Structures",
+    description: "Algorithmic problem solving and data structure optimization",
+    label: "freeCodeCamp"
+  },
+  {
+    title: "Frontend for Java Full Stack",
+    description: "Frontend architecture and UI development principles",
+    label: "Coursera"
+  },
+  {
+    title: "API Fundamentals",
+    description: "Student Expert Certification in API design and testing",
+    label: "Postman"
+  },
+  {
+    title: "Practical GitHub Actions",
+    description: "CI/CD workflows, automation, and deployment pipelines",
+    label: "LinkedIn"
+  }
 ];
 
 export default function Education() {
@@ -41,26 +75,30 @@ export default function Education() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-24"
+          className="mb-24 text-center"
         >
           <p className="text-xs tracking-[0.3em] text-white/40 uppercase mb-4">Academia</p>
           <h2 className="text-5xl md:text-6xl font-extralight mb-16">Education</h2>
 
-          <div className="space-y-0">
+          {/* 3D Cards Grid — perspective wrapper is required */}
+          <div className="grid md:grid-cols-3 gap-8 w-full" style={{ perspective: "1200px" }}>
             {education.map((edu, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="border-t border-white/8 py-8 grid md:grid-cols-[200px_1fr] gap-4"
+                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
-                <p className="text-xs font-mono text-white/40">{edu.period}</p>
-                <div>
-                  <h3 className="text-lg font-light text-white/90 mb-1">{edu.degree}</h3>
-                  <p className="text-sm text-white/40">{edu.institution}</p>
-                </div>
+                <InteractiveTravelCard
+                  title={edu.degree}
+                  subtitle={edu.institution}
+                  imageUrl={edu.image}
+                  actionText={edu.actionText}
+                  href={edu.href}
+                  badge={edu.badge}
+                  meta={edu.period}
+                />
               </motion.div>
             ))}
           </div>
@@ -72,22 +110,24 @@ export default function Education() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
         >
-          <div className="w-full h-[1px] bg-white/8 mb-16" />
-          <p className="text-xs tracking-[0.3em] text-white/40 uppercase mb-12">Credentials</p>
-          <div className="flex flex-wrap gap-3">
-            {certs.map((cert, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                className="text-sm px-4 py-2 rounded-full border border-white/10 text-white/50 hover:border-white/25 hover:text-white/80 transition-all duration-300 cursor-default"
-              >
-                {cert}
-              </motion.span>
-            ))}
+          <div className="w-full h-[1px] bg-white/10 mb-16" />
+          <p className="text-xs tracking-[0.3em] text-white/40 uppercase mb-8 text-center">Certifications</p>
+          <div className="w-full flex justify-center">
+            <MagicBento 
+              cards={certData}
+              textAutoHide={false}
+              enableStars={true}
+              enableSpotlight={true}
+              enableBorderGlow={true}
+              enableTilt={true}
+              enableMagnetism={true}
+              clickEffect={true}
+              spotlightRadius={300}
+              particleCount={12}
+              glowColor="125, 249, 255"
+            />
           </div>
         </motion.div>
 

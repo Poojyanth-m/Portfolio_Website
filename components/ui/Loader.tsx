@@ -56,21 +56,67 @@ export default function Loader({ onLoadComplete }: LoaderProps) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#121212] text-white"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0e0e0e]"
         >
-          <div className="flex flex-col items-center gap-4">
-            <h1 className="text-sm font-medium tracking-[0.2em] text-white/70 uppercase">
-              Loading Experience
-            </h1>
-            <div className="relative overflow-hidden w-64 h-[2px] bg-white/10 rounded-full">
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-white/80 shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-                initial={{ width: "0%" }}
-                animate={{ width: `${progress}%` }}
-                transition={{ ease: "linear", duration: 0.1 }}
-              />
+          <style>{`
+            .uiverse-loader {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: relative;
+              cursor: not-allowed;
+              scale: 0.7;
+            }
+            .uiverse-central {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: relative;
+              width: 10em;
+              height: 10em;
+              border-radius: 50%;
+              box-shadow: 0.5em 1em 1em red,
+                -0.5em 0.5em 1em orange,
+                0.5em -0.5em 1em orangered,
+                -0.5em -0.5em 1em yellow;
+            }
+            .uiverse-external-shadow {
+              width: 10em;
+              height: 10em;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              position: relative;
+              box-shadow: 0.5em 0.5em 3em red,
+                -0.5em 0.5em 3em orange,
+                0.5em -0.5em 3em orangered,
+                -0.5em -0.5em 3em yellow;
+              z-index: 99;
+              animation: uiverse-rotate 3s linear infinite;
+              background-color: #212121;
+            }
+            .uiverse-intern {
+              position: absolute;
+              color: white;
+              z-index: 999;
+              font-family: monospace;
+              font-size: 1.5rem;
+              font-weight: bold;
+              text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            }
+            @keyframes uiverse-rotate {
+              0% { transform: rotate(0deg); }
+              50% { transform: rotate(180deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+          
+          <div className="uiverse-loader">
+            <div className="uiverse-intern">{progress}%</div>
+            <div className="uiverse-external-shadow">
+              <div className="uiverse-central"></div>
             </div>
-            <p className="text-xs font-mono text-white/50">{progress}%</p>
           </div>
         </motion.div>
       )}
