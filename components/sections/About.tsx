@@ -2,66 +2,22 @@
 
 import { motion } from "framer-motion";
 import ScrollStack, { ScrollStackItem } from "@/components/ui/ScrollStack";
-import { 
-  Code2, 
-  Layout, 
-  Server, 
-  Smartphone, 
-  Database, 
-  BrainCircuit, 
-  Wrench 
-} from "lucide-react";
 
-const skills = [
-  {
-    category: "Languages",
-    icon: Code2,
-    description: "Core programming languages for building robust, high-performance software systems.",
-    items: ["JavaScript", "Python", "Java", "C++", "HTML5", "CSS3"]
-  },
-  {
-    category: "Frontend",
-    icon: Layout,
-    description: "Architecting interactive, pixel-perfect user interfaces with modern web frameworks.",
-    items: ["React.js", "React Native", "Angular", "Next.js", "Tailwind CSS", "Bootstrap", "Framer Motion"]
-  },
-  {
-    category: "Backend",
-    icon: Server,
-    description: "Designing scalable microservices, RESTful APIs, and secure authentication flows.",
-    items: ["Node.js", "Express.js", "FastAPI", "Flask", "REST APIs", "JWT Authentication", "Microservices"]
-  },
-  {
-    category: "Mobile",
-    icon: Smartphone,
-    description: "Developing cross-platform mobile applications with native-like performance.",
-    items: ["React Native (Expo)", "Flutter"]
-  },
-  {
-    category: "Databases",
-    icon: Database,
-    description: "Managing relational and NoSQL databases for high availability and efficient data retrieval.",
-    items: ["PostgreSQL", "MySQL", "MongoDB", "Firebase Firestore", "Redis", "Supabase"]
-  },
-  {
-    category: "AI / ML",
-    icon: BrainCircuit,
-    description: "Engineering intelligent systems, training models, and integrating advanced language models.",
-    items: ["TensorFlow", "Keras", "Scikit-learn", "OpenCV", "NumPy", "Pandas", "Matplotlib", "RAG", "Large Language Models", "Natural Language Processing", "Prompt Engineering", "Multi-Agent Systems", "Model Training & Evaluation", "Vector Embeddings"]
-  },
-  {
-    category: "DevOps & Tools",
-    icon: Wrench,
-    description: "Streamlining development workflows with containerization, CI/CD pipelines, and version control.",
-    items: ["Git", "GitHub", "VS Code", "Docker", "CI/CD", "Postman", "Figma", "Android Studio", "Google Colab", "Jupyter Notebook"]
-  }
-];
+const skills = {
+  "Languages": ["JavaScript", "Python", "Java", "C++", "HTML5", "CSS3"],
+  "Frontend": ["React.js", "React Native", "Angular", "Next.js", "Tailwind CSS", "Bootstrap", "Framer Motion"],
+  "Backend": ["Node.js", "Express.js", "FastAPI", "Flask", "REST APIs", "JWT Authentication", "Microservices"],
+  "Mobile": ["React Native (Expo)", "Flutter"],
+  "Databases": ["PostgreSQL", "MySQL", "MongoDB", "Firebase Firestore", "Redis", "Supabase"],
+  "AI / ML": ["TensorFlow", "Keras", "Scikit-learn", "OpenCV", "NumPy", "Pandas", "Matplotlib", "RAG", "Large Language Models", "Natural Language Processing", "Prompt Engineering", "Multi-Agent Systems", "Model Training & Evaluation", "Vector Embeddings"],
+  "DevOps & Tools": ["Git", "GitHub", "VS Code", "Docker", "CI/CD", "Postman", "Figma", "Android Studio", "Google Colab", "Jupyter Notebook"]
+};
 
-const skillCount = skills.length;
+const skillCount = Object.keys(skills).length;
 
 export default function About() {
   return (
-    <section id="about" className="relative z-20 bg-[#121212] py-32 px-4 md:px-16 lg:px-24">
+    <section id="about" className="relative z-20 bg-[#121212] py-32 px-8 md:px-16 lg:px-24">
       <div className="w-full">
 
         {/* Section header */}
@@ -130,69 +86,57 @@ export default function About() {
           <ScrollStack
             useWindowScroll={true}
             itemDistance={150}
-            itemScale={0.04}
-            itemStackDistance={30}
-            stackPosition="18%"
-            scaleEndPosition="10%"
-            baseScale={0.88}
-            blurAmount={1.5}
+            itemScale={0.03}
+            itemStackDistance={20}
+            stackPosition="10%"
+            scaleEndPosition="5%"
+            baseScale={0.82}
+            blurAmount={1.2}
             className="w-full max-w-5xl mx-auto"
           >
-            {skills.map((skillGroup, i) => {
-              const Icon = skillGroup.icon;
-              return (
-                <ScrollStackItem
-                  key={skillGroup.category}
-                  itemClassName="bg-[#0a0a0a] border border-white/[0.08] shadow-[0_-4px_40px_rgba(0,0,0,0.8)] flex flex-col justify-center h-auto min-h-[420px] overflow-hidden group"
-                >
-                  {/* Subtle animated inner glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent rounded-[40px] opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Giant faint watermark icon */}
-                  <div className="absolute -right-8 -bottom-8 text-white/[0.02] transform rotate-[-15deg] transition-transform duration-700 group-hover:scale-110 group-hover:text-white/[0.04] pointer-events-none">
-                    <Icon size={340} strokeWidth={1} />
+            {Object.entries(skills).map(([category, items], i) => (
+              <ScrollStackItem
+                key={category}
+                itemClassName="relative bg-gradient-to-br from-[#1c1c1c] to-[#0a0a0a] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.05)] flex flex-col overflow-hidden !h-[480px] !rounded-[32px]"
+              >
+                {/* Subtle inner glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent pointer-events-none" />
+
+                {/* Giant watermark number to fill space */}
+                <div className="absolute -right-4 -bottom-8 text-[180px] md:text-[240px] font-bold text-white/[0.02] leading-none select-none pointer-events-none tracking-tighter">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+
+                {/* Card content */}
+                <div className="relative z-10 w-full p-8 md:p-12 h-full flex flex-col">
+                  {/* Header row */}
+                  <div className="flex items-start justify-between mb-6">
+                    <h3 className="text-3xl md:text-5xl font-light text-white/90 tracking-tight">
+                      {category}
+                    </h3>
+                    <span className="text-xs tracking-[0.3em] text-white/40 uppercase font-mono mt-2 bg-white/[0.05] px-4 py-1.5 rounded-full border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+                      {String(i + 1).padStart(2, "0")} / {String(skillCount).padStart(2, "0")}
+                    </span>
                   </div>
 
-                  {/* Card content */}
-                  <div className="relative z-10 w-full h-full flex flex-col pt-2">
-                    {/* Header row */}
-                    <div className="flex items-start justify-between mb-8">
-                      <div className="flex items-start md:items-center gap-5 flex-col md:flex-row">
-                        <div className="p-3.5 rounded-2xl bg-white/[0.05] border border-white/[0.1] shrink-0">
-                          <Icon className="w-8 h-8 text-white/80" strokeWidth={1.5} />
-                        </div>
-                        <div>
-                          <h3 className="text-3xl md:text-4xl font-light text-white tracking-tight mb-2">
-                            {skillGroup.category}
-                          </h3>
-                          <p className="text-sm text-white/50 font-light max-w-md leading-relaxed">
-                            {skillGroup.description}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-xs tracking-[0.3em] text-white/20 uppercase font-mono mt-2 hidden sm:block shrink-0">
-                        {String(i + 1).padStart(2, "0")} / {String(skillCount).padStart(2, "0")}
+                  {/* Divider */}
+                  <div className="w-full h-[1px] bg-gradient-to-r from-white/[0.15] to-transparent mb-8" />
+
+                  {/* Skill chips */}
+                  <div className="flex flex-wrap gap-3 mt-auto mb-auto">
+                    {items.map((skill) => (
+                      <span
+                        key={skill}
+                        className="text-sm md:text-[15px] px-4 py-2.5 rounded-xl bg-[#121212]/80 border border-white/[0.08] text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:bg-white/[0.08] hover:text-white hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.2)] hover:-translate-y-0.5 transition-all duration-300 cursor-default flex items-center gap-2.5"
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                        {skill}
                       </span>
-                    </div>
-
-                    {/* Divider */}
-                    <div className="w-full h-[1px] bg-gradient-to-r from-white/[0.1] to-transparent mb-8" />
-
-                    {/* Skill chips */}
-                    <div className="flex flex-wrap gap-3 mt-auto">
-                      {skillGroup.items.map((skill) => (
-                        <span
-                          key={skill}
-                          className="text-[13px] px-5 py-2.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-white/70 tracking-wide hover:bg-white/[0.08] hover:text-white hover:border-white/30 transition-all duration-300 cursor-default shadow-sm backdrop-blur-sm"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    ))}
                   </div>
-                </ScrollStackItem>
-              );
-            })}
+                </div>
+              </ScrollStackItem>
+            ))}
           </ScrollStack>
         </motion.div>
 
