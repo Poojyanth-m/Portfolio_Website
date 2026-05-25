@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, useMotionValue, motion } from "framer-motion";
 import HeroOverlay from "./HeroOverlay";
+import SplashCursor from "@/components/ui/SplashCursor";
 
 const TOTAL_FRAMES = 120;
 
@@ -128,17 +129,24 @@ export default function ScrollyCanvas() {
     <div ref={containerRef} className="relative h-[500vh] w-full bg-black">
       {/* Sticky fullscreen canvas */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
+        <SplashCursor 
+          SIM_RESOLUTION={64} 
+          DYE_RESOLUTION={1024} 
+          PRESSURE_ITERATIONS={15} 
+          COLOR="#ffffff" 
+          RAINBOW_MODE={false} 
+        />
         <canvas
           ref={canvasRef}
           style={{ width: "100%", height: "100%", display: "block" }}
         />
         {/* Cinematic gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
       </div>
 
-      {/* Text overlays — position absolute over the 500vh container */}
-      <HeroOverlay />
+      {/* Text overlays */}
+      <HeroOverlay scrollYProgress={scrollYProgress} />
     </div>
   );
 }

@@ -28,22 +28,28 @@ export default function Home() {
         {/* Hero Scrollytelling Canvas */}
         <ScrollyCanvas />
 
-        {/* Layered Content — slides OVER the hero like a book */}
-        <div className="relative z-20 -mt-[100vh] bg-[#121212] rounded-t-[3rem] shadow-[0_-30px_60px_rgba(0,0,0,0.6)] pt-12 overflow-hidden">
-          {/* About + Skills */}
-          <About />
+        {/* Layered Content — slides OVER the hero with a cinematic fog transition */}
+        <div className="relative z-20 -mt-[100vh]">
+          
+          {/* Cinematic Top Fade: this sits right ABOVE the solid background, acting as a fog that smoothly transitions the hero into darkness before the content arrives */}
+          <div className="absolute top-0 left-0 w-full h-[25vh] -translate-y-full bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505] pointer-events-none" />
+          
+          <div className="bg-[#050505] relative z-10 w-full overflow-hidden">
+            {/* About + Skills */}
+            <About />
 
-          {/* Experience */}
-          <Experience />
+            {/* Experience */}
+            <Experience />
 
-          {/* Projects */}
-          <Projects />
+            {/* Projects */}
+            <Projects />
 
-          {/* Education + Certifications */}
-          <Education />
+            {/* Education + Certifications */}
+            <Education />
 
-          {/* Contact + Footer */}
-          <Footer />
+            {/* Contact + Footer */}
+            <Footer />
+          </div>
         </div>
       </div>
     </main>

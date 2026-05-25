@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
 export interface TimelineEntry {
   title: string;
@@ -59,14 +59,17 @@ function TimelineRow({
 }) {
   const isLeft = index % 2 === 0;
 
+  const rowRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(rowRef, { margin: "-40% 0px -40% 0px" });
+
   return (
-    <div className="relative flex items-start mb-16 md:mb-24">
+    <div ref={rowRef} className="relative flex items-start mb-16 md:mb-24">
       {/* Left column */}
       <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="w-[calc(50%-28px)] pr-8 flex flex-col items-end text-right"
       >
         {isLeft ? (
@@ -85,15 +88,29 @@ function TimelineRow({
 
       {/* Centre dot */}
       <div className="flex-shrink-0 w-14 flex flex-col items-center z-10">
-        <div className="w-4 h-4 rounded-full bg-white/20 border-2 border-white/50 shadow-[0_0_12px_rgba(255,255,255,0.25)] mt-1" />
+        <div className="relative flex items-center justify-center mt-1">
+          {isInView && (
+            <>
+              <div className="absolute w-4 h-4 bg-white rounded-full animate-ping" style={{ animationDuration: '2.5s' }} />
+              <div className="absolute w-8 h-8 border border-white/30 rounded-full animate-pulse" style={{ animationDuration: '2.5s' }} />
+            </>
+          )}
+          <div
+            className={`relative z-10 w-4 h-4 rounded-full border-2 transition-all duration-700 ${
+              isInView 
+                ? "bg-white border-white shadow-[0_0_15px_rgba(255,255,255,0.6)]" 
+                : "bg-[#0e0e0e] border-white/30"
+            }`}
+          />
+        </div>
       </div>
 
       {/* Right column */}
       <motion.div
-        initial={{ opacity: 0, x: 40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="w-[calc(50%-28px)] pl-8 flex flex-col items-start text-left"
       >
         {!isLeft ? (

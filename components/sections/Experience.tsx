@@ -33,7 +33,7 @@ const experiences = [
       "Contributed to enterprise-level assessment platform features — building scalable backend APIs and frontend workflows. Integrated APIs, implemented feature enhancements, and resolved performance bottlenecks across sprint-based delivery cycles.",
   },
   {
-    role: "Frontend Developer",
+    role: "Full Stack Developer",
     company: "Daily Thanthi",
     project: "Daily Thanthi Digital Platform",
     period: "2026",
@@ -63,7 +63,7 @@ function ExperienceCard({
         className="w-full h-full p-8 text-left transition-colors duration-500"
         backgroundColor="#101010"
         edgeSensitivity={40}
-        glowColor="0 0 100" 
+        glowColor="0 0 100"
         colors={['#ffffff', '#a3a3a3', '#525252']}
         animated={false}
         borderRadius={20}
@@ -110,7 +110,7 @@ export default function Experience() {
   }));
 
   return (
-    <section id="experience" className="bg-[#0e0e0e] py-32 px-4 md:px-8">
+    <section id="experience" className="bg-[#0e0e0e] pt-32 pb-8 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <motion.div

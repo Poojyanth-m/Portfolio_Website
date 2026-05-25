@@ -12,8 +12,9 @@ const signatureFont = Pinyon_Script({
 
 const navItems = [
   { name: "About", href: "#about", id: "about" },
-  { name: "Work", href: "#work", id: "work" },
   { name: "Experience", href: "#experience", id: "experience" },
+  { name: "Work", href: "#work", id: "work" },
+  { name: "Education", href: "#education", id: "education" },
   { name: "Contact", href: "#contact", id: "contact" },
 ];
 
@@ -23,8 +24,6 @@ export default function Navbar() {
 
   useEffect(() => {
     // Use IntersectionObserver for smooth, performant scrollspy
-    const sections = navItems.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-
     observerRef.current = new IntersectionObserver(
       (entries) => {
         // Find the entry that is most visible
@@ -44,9 +43,16 @@ export default function Navbar() {
       }
     );
 
-    sections.forEach((section) => observerRef.current?.observe(section));
+    // Give DOM a tick to finish mounting all sections
+    const timeout = setTimeout(() => {
+      const sections = navItems.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+      sections.forEach((section) => observerRef.current?.observe(section));
+    }, 100);
 
-    return () => observerRef.current?.disconnect();
+    return () => {
+      clearTimeout(timeout);
+      observerRef.current?.disconnect();
+    };
   }, []);
 
   return (
@@ -54,10 +60,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-4 left-0 right-0 z-40 flex items-center justify-center px-6 md:px-12 pointer-events-none"
+      className="fixed top-10 left-0 right-0 z-40 flex items-center justify-center px-6 md:px-12 pointer-events-none"
     >
       {/* Nav links — absolutely centered glass pill with scrollspy */}
-      <div className="hidden md:flex items-center gap-1 px-3 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.4)] pointer-events-auto">
+      <div className="hidden md:flex items-center gap-1 px-3 py-2 rounded-full border border-white/[0.08] bg-[#121212]/20 backdrop-blur-[40px] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08),0_0_24px_rgba(125,249,255,0.04)] pointer-events-auto">
         {navItems.map((item) => {
           const isActive = activeSection === item.id;
           return (

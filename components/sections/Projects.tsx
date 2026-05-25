@@ -13,7 +13,7 @@ const projectItems = [
 
 export default function Projects() {
   return (
-    <section id="work" className="relative z-20 bg-[#121212] py-32 px-4 md:px-16 lg:px-24">
+    <section id="work" className="relative z-20 bg-[#121212] pt-16 pb-16 px-4 md:px-16 lg:px-24">
       <div className="w-full">
         {/* Header */}
         <motion.div
