@@ -107,7 +107,7 @@ const updateCardGlowProperties = (card: HTMLElement, mouseX: number, mouseY: num
 };
 
 const ParticleCard: React.FC<{
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   disableAnimations?: boolean;
   style?: React.CSSProperties;
@@ -496,7 +496,7 @@ const GlobalSpotlight: React.FC<{
 
 const BentoCardGrid: React.FC<{
   children: React.ReactNode;
-  gridRef?: React.RefObject<HTMLDivElement | null>;
+  gridRef?: React.RefObject<HTMLDivElement>;
 }> = ({ children, gridRef }) => (
   <div
     className="bento-section grid gap-2 p-3 w-full select-none relative"
