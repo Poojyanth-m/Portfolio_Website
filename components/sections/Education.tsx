@@ -73,6 +73,18 @@ const certData = [
     description: "CI/CD workflows, automation, and deployment pipelines",
     label: "LinkedIn",
     imageUrl: "/certifications/Practical_github_actions.png"
+  },
+  {
+    title: "Certified System Administrator",
+    description: "ServiceNow platform administration, configuration, and IT service management",
+    label: "ServiceNow",
+    imageUrl: "/certifications/Servicenow_Certified_System_Administrator.png"
+  },
+  {
+    title: "Certified Application Developer",
+    description: "Designing, building, and deploying custom applications on the ServiceNow platform",
+    label: "ServiceNow",
+    imageUrl: "/certifications/Servicenow_Certified_Application_developer.png"
   }
 ];
 

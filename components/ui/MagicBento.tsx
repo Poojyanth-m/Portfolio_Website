@@ -589,6 +589,14 @@ const MagicBento: React.FC<BentoProps> = ({
               grid-column: 4;
               grid-row: 3;
             }
+            
+            .card-responsive > div:nth-child(7) {
+              grid-column: span 2;
+            }
+            
+            .card-responsive > div:nth-child(8) {
+              grid-column: span 2;
+            }
           }
           
           .card--border-glow::after {
@@ -687,7 +695,8 @@ const MagicBento: React.FC<BentoProps> = ({
             const cardStyle = {
               backgroundColor: card.color || '#080808',
               backgroundImage: card.imageUrl ? `url(${card.imageUrl})` : 'none',
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
               borderColor: 'rgba(255,255,255,0.05)',
               color: 'var(--white)',
