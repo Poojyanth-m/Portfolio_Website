@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 export interface TimelineEntry {
   title: string;
@@ -12,21 +12,43 @@ export function Timeline({ data }: { data: TimelineEntry[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
+  const [lineHeight, setLineHeight] = useState(0);
+  const [lineOpacity, setLineOpacity] = useState(0);
 
+  // Measure the content height
   useEffect(() => {
     if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setHeight(rect.height);
+      setHeight(ref.current.getBoundingClientRect().height);
     }
-  }, [ref]);
+  }, [data]);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 10%", "end 50%"],
-  });
+  // Drive the timeline line via native scroll
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+    const update = () => {
+      const rect = container.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const totalHeight = container.offsetHeight;
+
+      // start: when top of container hits 10% from top of viewport
+      const start = -(totalHeight * 0) + windowHeight * 0.1;
+      // end: when bottom of container hits 50% of viewport
+      const end = -totalHeight + windowHeight * 0.5;
+
+      // progress 0→1 as rect.top goes from start → end
+      const rawProgress = (start - rect.top) / (start - end);
+      const progress = Math.min(1, Math.max(0, rawProgress));
+
+      setLineHeight(progress);
+      setLineOpacity(progress > 0.02 ? 1 : 0);
+    };
+
+    window.addEventListener("scroll", update, { passive: true });
+    update(); // init on mount
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   return (
     <div className="w-full font-sans" ref={containerRef}>
@@ -40,8 +62,12 @@ export function Timeline({ data }: { data: TimelineEntry[] }) {
           style={{ height: `${height}px` }}
           className="absolute left-1/2 top-0 -translate-x-1/2 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent overflow-hidden"
         >
-          <motion.div
-            style={{ height: heightTransform, opacity: opacityTransform }}
+          <div
+            style={{
+              height: `${lineHeight * height}px`,
+              opacity: lineOpacity,
+              transition: "opacity 0.3s ease",
+            }}
             className="absolute inset-x-0 top-0 w-full bg-gradient-to-t from-white/60 via-white/30 to-transparent rounded-full"
           />
         </div>
@@ -97,8 +123,8 @@ function TimelineRow({
           )}
           <div
             className={`relative z-10 w-4 h-4 rounded-full border-2 transition-all duration-700 ${
-              isInView 
-                ? "bg-white border-white shadow-[0_0_15px_rgba(255,255,255,0.6)]" 
+              isInView
+                ? "bg-white border-white shadow-[0_0_15px_rgba(255,255,255,0.6)]"
                 : "bg-[#0e0e0e] border-white/30"
             }`}
           />
