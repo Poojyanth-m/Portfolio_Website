@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Poojyanth M. | Creative Developer",
-  description: "Bridging AI, engineering & cinematic interfaces.",
+  description: "Bridging scalable backend systems, machine learning, and dynamic user interfaces.",
 };
 
 export default function RootLayout({
