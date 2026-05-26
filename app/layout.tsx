@@ -5,7 +5,7 @@ import SmoothScrolling from "@/components/SmoothScrolling";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Poojyanth M. | Creative Developer",
+  title: "Poojyanth M. | Full Stack × AI Engineer",
   description: "Bridging scalable backend systems, machine learning, and dynamic user interfaces.",
 };
 
