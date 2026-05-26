@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useScroll, useTransform, useMotionValue, motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useMotionValue } from "framer-motion";
 import HeroOverlay from "./HeroOverlay";
 import SplashCursor from "@/components/ui/SplashCursor";
 
@@ -16,13 +16,11 @@ export default function ScrollyCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const rafRef = useRef<number>(0);
-  const currentFrameRef = useRef<number>(0); // smooth interpolated frame
-  const targetFrameRef = useRef<number>(0);  // scroll-driven target
+  const currentFrameRef = useRef<number>(0);
+  const targetFrameRef = useRef<number>(0);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  // Use a motion value so HeroOverlay still gets scroll progress
+  const scrollYProgress = useMotionValue(0);
 
   // Draw a specific frame using object-fit: cover math
   const drawFrame = (index: number) => {
@@ -44,11 +42,9 @@ export default function ScrollyCanvas() {
     let sw = iw, sh = ih, sx = 0, sy = 0;
 
     if (imgRatio > canvasRatio) {
-      // image is wider — crop sides
       sw = ih * canvasRatio;
       sx = (iw - sw) / 2;
     } else {
-      // image is taller — crop top/bottom
       sh = iw / canvasRatio;
       sy = (ih - sh) / 2;
     }
@@ -66,14 +62,13 @@ export default function ScrollyCanvas() {
     canvas.height = window.innerHeight * dpr;
     const ctx = canvas.getContext("2d");
     if (ctx) ctx.scale(dpr, dpr);
-    // canvas CSS size stays 100% via Tailwind
     drawFrame(Math.round(currentFrameRef.current));
   };
 
-  // Main RAF loop — interpolate toward target for silky smoothness
+  // Main RAF loop — interpolate toward target
   useEffect(() => {
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const LERP_FACTOR = 0.12; // lower = smoother but slower
+    const LERP_FACTOR = 0.12;
 
     const loop = () => {
       const diff = targetFrameRef.current - currentFrameRef.current;
@@ -88,11 +83,28 @@ export default function ScrollyCanvas() {
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  // Update target frame from scroll progress
+  // Drive scroll progress directly from native scroll events — no Lenis dependency
   useEffect(() => {
-    return scrollYProgress.on("change", (v) => {
-      targetFrameRef.current = Math.min(TOTAL_FRAMES - 1, Math.max(0, v * (TOTAL_FRAMES - 1)));
-    });
+    const handleScroll = () => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const containerHeight = container.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      // progress 0→1 as container scrolls from top to bottom of viewport
+      const scrolled = -rect.top;
+      const total = containerHeight - viewportHeight;
+      const progress = Math.min(1, Math.max(0, scrolled / total));
+
+      scrollYProgress.set(progress);
+      targetFrameRef.current = Math.min(TOTAL_FRAMES - 1, Math.max(0, progress * (TOTAL_FRAMES - 1)));
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // initialize on mount
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollYProgress]);
 
   // Preload all frames
@@ -111,7 +123,6 @@ export default function ScrollyCanvas() {
           })
         )
       );
-      // Draw first frame once loaded
       drawFrame(0);
     };
     load();
@@ -129,12 +140,12 @@ export default function ScrollyCanvas() {
     <div ref={containerRef} className="relative h-[500vh] w-full bg-black">
       {/* Sticky fullscreen canvas */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
-        <SplashCursor 
-          SIM_RESOLUTION={64} 
-          DYE_RESOLUTION={1024} 
-          PRESSURE_ITERATIONS={15} 
-          COLOR="#ffffff" 
-          RAINBOW_MODE={false} 
+        <SplashCursor
+          SIM_RESOLUTION={64}
+          DYE_RESOLUTION={1024}
+          PRESSURE_ITERATIONS={15}
+          COLOR="#ffffff"
+          RAINBOW_MODE={false}
         />
         <canvas
           ref={canvasRef}
