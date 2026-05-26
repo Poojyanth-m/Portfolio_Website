@@ -55,54 +55,57 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row gap-20 xl:gap-32 w-full justify-start lg:border-l lg:border-white/10 lg:pl-16 pt-10"
+            className="flex flex-col sm:flex-row gap-12 xl:gap-20 w-full justify-start lg:ml-8"
           >
+            {/* First Separator Line (Replaces border-l so it matches the second line's height exactly) */}
+            <div className="hidden lg:block w-[1px] bg-white/10" />
+
             {/* LET'S WORK TOGETHER (Moved to Right Column) */}
             <div className="flex-1 flex flex-col">
               <div className="flex items-center gap-3 mb-5 text-white/70">
                 <Users size={16} />
                 <p className="text-[10px] tracking-[0.45em] text-white uppercase font-medium whitespace-nowrap">LET'S WORK TOGETHER</p>
               </div>
-              
+
               <div className="flex flex-col gap-3 w-full max-w-[320px]">
-              <a
-                href="mailto:poojyanthm@gmail.com"
-                className="flex items-center justify-between px-5 py-4 rounded-xl border border-white/10 bg-white/[0.03] text-white text-sm font-light hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 group"
-              >
-                <div className="flex items-center gap-4">
-                  <Mail size={18} className="text-white/70 group-hover:text-white transition-colors" />
-                  <span>Send Email</span>
-                </div>
-                <ArrowUpRight size={14} className="text-white/40 group-hover:text-white transition-colors" />
-              </a>
+                <a
+                  href="mailto:poojyanthm@gmail.com"
+                  className="flex items-center justify-between px-5 py-4 rounded-xl border border-white/10 bg-white/[0.03] text-white text-sm font-light hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <Mail size={18} className="text-white/70 group-hover:text-white transition-colors" />
+                    <span>Send Email</span>
+                  </div>
+                  <ArrowUpRight size={14} className="text-white/40 group-hover:text-white transition-colors" />
+                </a>
 
-              <a
-                href="/Resume/Poojyanth_M_Resume.docx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between px-5 py-4 rounded-xl border border-white/10 bg-white/[0.03] text-white text-sm font-light hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 group"
-              >
-                <div className="flex items-center gap-4">
-                  <FileText size={18} className="text-white/70 group-hover:text-white transition-colors" />
-                  <span>View Resume</span>
-                </div>
-                <ArrowUpRight size={14} className="text-white/40 group-hover:text-white transition-colors" />
-              </a>
+                <a
+                  href="/Resume/Poojyanth_M_Resume.docx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between px-5 py-4 rounded-xl border border-white/10 bg-white/[0.03] text-white text-sm font-light hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <FileText size={18} className="text-white/70 group-hover:text-white transition-colors" />
+                    <span>View Resume</span>
+                  </div>
+                  <ArrowUpRight size={14} className="text-white/40 group-hover:text-white transition-colors" />
+                </a>
 
-              <a
-                href="https://wa.me/918660640338?text=Hi%20Poojyanth%2C%20I%20came%20across%20your%20portfolio%20and%20really%20liked%20your%20work.%20Would%20love%20to%20connect%20and%20discuss%20a%20potential%20opportunity%20with%20you."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between px-5 py-4 rounded-xl border border-white/10 bg-white/[0.03] text-white text-sm font-light hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 group"
-              >
-                <div className="flex items-center gap-4">
-                  <MessageCircle size={18} className="text-white/70 group-hover:text-white transition-colors" />
-                  <span>Let's Talk</span>
-                </div>
-                <ArrowUpRight size={14} className="text-white/40 group-hover:text-white transition-colors" />
-              </a>
+                <a
+                  href="https://wa.me/918660640338?text=Hi%20Poojyanth%2C%20I%20came%20across%20your%20portfolio%20and%20really%20liked%20your%20work.%20Would%20love%20to%20connect%20and%20discuss%20a%20potential%20opportunity%20with%20you."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between px-5 py-4 rounded-xl border border-white/10 bg-white/[0.03] text-white text-sm font-light hover:bg-white/[0.08] hover:border-white/30 transition-all duration-300 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <MessageCircle size={18} className="text-white/70 group-hover:text-white transition-colors" />
+                    <span>Let's Talk</span>
+                  </div>
+                  <ArrowUpRight size={14} className="text-white/40 group-hover:text-white transition-colors" />
+                </a>
+              </div>
             </div>
-          </div>
 
             {/* Separator Line */}
             <div className="hidden sm:block w-[1px] bg-white/10" />

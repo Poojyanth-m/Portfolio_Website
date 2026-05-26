@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import ScrollStack, { ScrollStackItem } from "@/components/ui/ScrollStack";
+import BorderGlow from "@/components/ui/BorderGlow";
 
 import {
   SiJavascript, SiPython, SiCplusplus, SiHtml5,
@@ -11,18 +12,14 @@ import {
   SiTensorflow, SiKeras, SiOpencv, SiScikitlearn, SiNumpy, SiPandas,
   SiGit, SiGithub, SiDocker, SiPostman, SiFigma, SiJupyter, SiAndroidstudio, SiGooglecolab, SiExpo, SiFlutter
 } from "react-icons/si";
-import { TbApi, TbBrain, TbRobot, TbMessageLanguage, TbBrandVscode, TbChartLine, TbChartScatter } from "react-icons/tb";
+import { TbApi, TbBrain, TbRobot, TbMessageLanguage, TbBrandVscode, TbChartLine, TbChartScatter, TbCode, TbLayout, TbServer, TbDeviceMobile, TbDatabase, TbSettings } from "react-icons/tb";
 import { FaServer, FaJava, FaCss3Alt, FaNetworkWired } from "react-icons/fa";
 import { GoWorkflow } from "react-icons/go";
 
 const skills = {
   "Languages": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>
-      </svg>
-    ),
-    description: "Core programming languages I use to build robust, efficient and scalable applications.",
+    icon: <TbCode size={28} strokeWidth={1.5} />,
+    description: "Core programming languages for building robust, scalable logic and high-performance algorithms.",
     items: [
       { name: "JavaScript", icon: <SiJavascript className="text-[#F7DF1E]" /> },
       { name: "Python", icon: <SiPython className="text-[#3776AB]" /> },
@@ -33,12 +30,8 @@ const skills = {
     ]
   },
   "Frontend": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line>
-      </svg>
-    ),
-    description: "Modern frameworks and tools for creating highly interactive and responsive web interfaces.",
+    icon: <TbLayout size={28} strokeWidth={1.5} />,
+    description: "Modern frameworks for crafting highly interactive, responsive, and cinematic user interfaces.",
     items: [
       { name: "React.js", icon: <SiReact className="text-[#61DAFB]" /> },
       { name: "React Native", icon: <SiReact className="text-[#61DAFB]" /> },
@@ -50,12 +43,8 @@ const skills = {
     ]
   },
   "Backend": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-      </svg>
-    ),
-    description: "Server-side architectures, API design, and robust database management systems.",
+    icon: <TbServer size={28} strokeWidth={1.5} />,
+    description: "Server-side architectures, RESTful API design, and robust microservice orchestration.",
     items: [
       { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
       { name: "Express.js", icon: <SiExpress className="text-white" /> },
@@ -67,24 +56,16 @@ const skills = {
     ]
   },
   "Mobile": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line>
-      </svg>
-    ),
-    description: "Cross-platform mobile application development for iOS and Android.",
+    icon: <TbDeviceMobile size={28} strokeWidth={1.5} />,
+    description: "Cross-platform frameworks for delivering seamless, native-like mobile applications.",
     items: [
       { name: "React Native (Expo)", icon: <SiExpo className="text-white" /> },
       { name: "Flutter", icon: <SiFlutter className="text-[#02569B]" /> }
     ]
   },
   "Databases": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
-    ),
-    description: "Scalable data storage solutions spanning relational and NoSQL databases.",
+    icon: <TbDatabase size={28} strokeWidth={1.5} />,
+    description: "Scalable data storage solutions spanning relational schemas and NoSQL document stores.",
     items: [
       { name: "PostgreSQL", icon: <SiPostgresql className="text-[#4169E1]" /> },
       { name: "MySQL", icon: <SiMysql className="text-[#4479A1]" /> },
@@ -95,13 +76,8 @@ const skills = {
     ]
   },
   "AI / ML": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
-        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
-      </svg>
-    ),
-    description: "Designing intelligent systems, training models, and building multi-agent workflows.",
+    icon: <TbBrain size={28} strokeWidth={1.5} />,
+    description: "Designing intelligent systems, training models, and building autonomous multi-agent workflows.",
     items: [
       { name: "TensorFlow", icon: <SiTensorflow className="text-[#FF6F00]" /> },
       { name: "Keras", icon: <SiKeras className="text-[#D00000]" /> },
@@ -118,18 +94,13 @@ const skills = {
     ]
   },
   "DevOps & Tools": {
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d97757" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
-    ),
-    description: "Version control, containerization, and continuous integration pipelines.",
+    icon: <TbSettings size={28} strokeWidth={1.5} />,
+    description: "Version control, containerization, and continuous integration pipelines for agile delivery.",
     items: [
       { name: "Git", icon: <SiGit className="text-[#F05032]" /> },
       { name: "GitHub", icon: <SiGithub className="text-white" /> },
       { name: "VS Code", icon: <TbBrandVscode className="text-[#007ACC]" /> },
       { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
-      { name: "CI/CD", icon: <GoWorkflow className="text-white/70" /> },
       { name: "Postman", icon: <SiPostman className="text-[#FF6C37]" /> },
       { name: "Figma", icon: <SiFigma className="text-[#F24E1E]" /> },
       { name: "Android Studio", icon: <SiAndroidstudio className="text-[#3DDC84]" /> },
@@ -292,78 +263,94 @@ export default function About() {
       {/* Technical Arsenal — ScrollStack */}
       <div className="w-full pb-32 pt-8 md:pt-16">
         <div className="flex items-center justify-center gap-6 mb-8 px-8 md:px-16 lg:px-24">
-            <div className="w-12 md:w-32 h-[1px] bg-gradient-to-r from-transparent to-white" />
-            <p className="text-sm md:text-base tracking-[0.4em] text-white uppercase font-light text-center whitespace-nowrap">Core Technologies</p>
-            <div className="w-12 md:w-32 h-[1px] bg-gradient-to-l from-transparent to-white" />
-          </div>
+          <div className="w-12 md:w-32 h-[1px] bg-gradient-to-r from-transparent to-white" />
+          <p className="text-sm md:text-base tracking-[0.4em] text-white uppercase font-light text-center whitespace-nowrap">Core Technologies</p>
+          <div className="w-12 md:w-32 h-[1px] bg-gradient-to-l from-transparent to-white" />
+        </div>
 
-          <ScrollStack
-            useWindowScroll={true}
-            itemDistance={120}
-            itemScale={0.03}
-            itemStackDistance={20}
-            stackPosition="12%"
-            scaleEndPosition="5%"
-            baseScale={0.82}
-            blurAmount={1.2}
-            className="w-full"
-          >
-            {Object.entries(skills).map(([category, data], i) => (
-              <ScrollStackItem
-                key={category}
-                itemClassName="relative bg-[#111111] border border-white/[0.07] flex flex-col overflow-hidden !h-[520px] !rounded-[28px] !mx-auto !w-full !max-w-4xl"
+        <ScrollStack
+          useWindowScroll={true}
+          itemDistance={120}
+          itemScale={0.03}
+          itemStackDistance={20}
+          stackPosition="12%"
+          scaleEndPosition="5%"
+          baseScale={0.82}
+          blurAmount={1.2}
+          className="w-full"
+        >
+          {Object.entries(skills).map(([category, data], i) => (
+            <ScrollStackItem
+              key={category}
+              itemClassName="relative w-full !max-w-5xl !mx-auto flex flex-col !h-[500px] group !p-0 !rounded-[32px] overflow-hidden"
+            >
+              <BorderGlow
+                className="w-full h-full p-8 md:p-12 text-left transition-colors duration-500 flex flex-col bg-[#0a0a0a]"
+                backgroundColor="#0a0a0a"
+                edgeSensitivity={40}
+                glowColor="0 0 100"
+                colors={['#ffffff', '#d97757', '#525252']}
+                animated={false}
+                borderRadius={32}
               >
-                {/* Subtle inner glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+                {/* Large faded icon in the background to fill space */}
+                <div className="absolute -bottom-12 -right-12 w-96 h-96 opacity-[0.05] pointer-events-none flex items-center justify-center transition-opacity duration-1000 group-hover:opacity-[0.15]">
+                  <div className="scale-[8] md:scale-[10] text-white/50">
+                    {data.icon}
+                  </div>
+                </div>
+
+                <div className="absolute -top-32 left-1/4 w-1/2 h-64 bg-[#d97757]/[0.03] blur-[80px] pointer-events-none" />
 
                 {/* Card content */}
-                <div className="relative z-10 w-full p-10 h-full flex flex-col">
+                <div className="relative z-10 w-full flex flex-col h-full">
 
-                  {/* Top left 01 */}
-                  <span className="text-[11px] font-mono tracking-widest text-white/40 mb-8">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  {/* Header row: Icon, Title, Description */}
-                  <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12 mb-10">
-
-                    {/* Icon Box */}
-                    <div className="flex-shrink-0 w-16 h-16 rounded-2xl border border-[#d97757]/20 bg-[#d97757]/[0.03] flex items-center justify-center">
-                      {data.icon}
+                  {/* Header Area */}
+                  <div className="flex flex-col gap-6 mb-8">
+                    <div className="flex items-center gap-5">
+                      <div className="flex-shrink-0 w-14 h-14 rounded-2xl border border-white/10 bg-white/[0.02] flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] text-[#d97757]">
+                        {data.icon}
+                      </div>
+                      <div className="flex flex-col justify-center">
+                        <span className="text-[11px] font-mono tracking-widest text-[#d97757]/80 uppercase mb-1.5 block">
+                          {String(i + 1).padStart(2, "0")} / TECH STACK
+                        </span>
+                        <h3 className="text-3xl md:text-4xl font-light text-white/90 tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+                          {category} <span className="text-[13px] md:text-[14px] text-white/40 hidden md:inline font-sans tracking-normal whitespace-nowrap"> — {data.description}</span>
+                        </h3>
+                      </div>
                     </div>
 
-                    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-16 flex-1">
-                      <h3 className="text-3xl md:text-4xl font-light text-white/90 tracking-tight whitespace-nowrap" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        {category}
-                      </h3>
-                      <p className="text-[14px] font-light text-white/50 leading-relaxed max-w-sm">
-                        {data.description}
-                      </p>
-                    </div>
-
+                    {/* Description for mobile where inline is hidden */}
+                    <p className="text-[14px] font-light text-white/50 leading-relaxed md:hidden">
+                      {data.description}
+                    </p>
                   </div>
 
-                  {/* Subtle Divider */}
-                  <div className="w-full h-[1px] bg-white/[0.05] mb-6" />
+                  {/* Tapered Divider */}
+                  <div className="w-full h-[1px] bg-gradient-to-r from-white/[0.08] to-transparent mb-8" />
 
-                  {/* Skill chips (Pills) — scrollable if overflow */}
-                  <div className="flex flex-wrap gap-2.5 overflow-y-auto" style={{ maxHeight: '200px', scrollbarWidth: 'none' }}>
+                  {/* Technologies — 4-column grid, uniform across all cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {data.items.map((skill) => (
-                      <span
+                      <div
                         key={skill.name}
-                        className="text-[13px] md:text-[14px] px-4 py-2 rounded-full bg-transparent border border-white/10 text-white/70 hover:bg-white/[0.05] hover:border-white/20 hover:text-white transition-all duration-300 flex items-center gap-2.5"
+                        className="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-white/[0.015] border border-white/[0.04] hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-300 group/skill cursor-default min-w-0"
                       >
-                        <div className="flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+                        <div className="flex-shrink-0 flex items-center justify-center w-5 h-5 opacity-70 group-hover/skill:opacity-100 transition-opacity">
                           {skill.icon}
                         </div>
-                        {skill.name}
-                      </span>
+                        <span className="text-[12.5px] font-medium text-white/60 group-hover/skill:text-white/90 transition-colors tracking-wide truncate">
+                          {skill.name}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
+              </BorderGlow>
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
       </div>
 
     </section>
