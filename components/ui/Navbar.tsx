@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Pinyon_Script } from "next/font/google";
 
 const signatureFont = Pinyon_Script({
@@ -20,39 +19,48 @@ const navItems = [
 
 export default function Navbar({ isLoaded = false }: { isLoaded?: boolean }) {
   const [activeSection, setActiveSection] = useState<string>("");
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    if (!isLoaded) return; // Don't observe until page is fully visible
+    if (!isLoaded) return;
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        // Find the entry that is most visible
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    const getActiveSection = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
 
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id);
+      // Find which section's top is closest above the center of the viewport
+      let currentSection = "";
+      let minDistance = Infinity;
+
+      for (const { id } of navItems) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const absoluteTop = rect.top + scrollY;
+        const distance = Math.abs(scrollY + windowHeight * 0.3 - absoluteTop);
+
+        if (absoluteTop <= scrollY + windowHeight * 0.6 && distance < minDistance) {
+          minDistance = distance;
+          currentSection = id;
         }
-      },
-      {
-        threshold: [0.1, 0.2, 0.3],
-        rootMargin: "-60px 0px -30% 0px",
       }
-    );
 
-    // Give DOM a tick to settle after loader fade
-    const timeout = setTimeout(() => {
-      const sections = navItems.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-      sections.forEach((section) => observerRef.current?.observe(section));
-    }, 300);
-
-    return () => {
-      clearTimeout(timeout);
-      observerRef.current?.disconnect();
+      setActiveSection(currentSection);
     };
+
+    // Run once immediately after load
+    getActiveSection();
+    window.addEventListener("scroll", getActiveSection, { passive: true });
+    return () => window.removeEventListener("scroll", getActiveSection);
   }, [isLoaded]);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
+    e.preventDefault();
+    setActiveSection(id); // Immediately set active on click
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <motion.nav
@@ -69,21 +77,26 @@ export default function Navbar({ isLoaded = false }: { isLoaded?: boolean }) {
             <a
               key={item.name}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href, item.id)}
               className={`relative px-5 py-2 text-sm font-light tracking-wide rounded-full transition-all duration-400 group ${
                 isActive
-                  ? "text-white bg-white/12 shadow-[0_0_18px_rgba(255,255,255,0.1)]"
-                  : "text-white/50 hover:text-white hover:bg-white/8"
+                  ? "text-white"
+                  : "text-white/50 hover:text-white"
               }`}
             >
               {/* Active pill indicator — animated */}
-              {isActive && (
-                <motion.span
-                  layoutId="activeNavPill"
-                  className="absolute inset-0 rounded-full bg-white/10 border border-white/15"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                />
-              )}
+              <AnimatePresence>
+                {isActive && (
+                  <motion.span
+                    layoutId="activeNavPill"
+                    className="absolute inset-0 rounded-full bg-white/10 border border-white/15"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+              </AnimatePresence>
 
               {/* Hover underline for non-active items */}
               {!isActive && (

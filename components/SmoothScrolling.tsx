@@ -1,12 +1,8 @@
 "use client";
 
-import { ReactLenis } from "@studio-freight/react-lenis";
 import { ReactNode } from "react";
 
+// Native smooth scrolling — avoids Lenis production hydration conflicts
 export default function SmoothScrolling({ children }: { children: ReactNode }) {
-  return (
-    <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothWheel: true }}>
-      {children}
-    </ReactLenis>
-  );
+  return <>{children}</>;
 }

@@ -8,10 +8,8 @@
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
 
-/* ─── Lenis integration ─────────────────────── */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-stopped { overflow: hidden; }
+/* ─── Native smooth scrolling ─────────────────── */
+html { scroll-behavior: smooth; }
 
 /* ─── Base styles ────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
