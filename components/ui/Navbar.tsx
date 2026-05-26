@@ -18,12 +18,13 @@ const navItems = [
   { name: "Contact", href: "#contact", id: "contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ isLoaded = false }: { isLoaded?: boolean }) {
   const [activeSection, setActiveSection] = useState<string>("");
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    // Use IntersectionObserver for smooth, performant scrollspy
+    if (!isLoaded) return; // Don't observe until page is fully visible
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         // Find the entry that is most visible
@@ -36,24 +37,22 @@ export default function Navbar() {
         }
       },
       {
-        // Fire when 20% of the section is visible
-        threshold: [0.2],
-        // -80px from top to account for the navbar height
-        rootMargin: "-80px 0px -20% 0px",
+        threshold: [0.1, 0.2, 0.3],
+        rootMargin: "-60px 0px -30% 0px",
       }
     );
 
-    // Give DOM a tick to finish mounting all sections
+    // Give DOM a tick to settle after loader fade
     const timeout = setTimeout(() => {
       const sections = navItems.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
       sections.forEach((section) => observerRef.current?.observe(section));
-    }, 100);
+    }, 300);
 
     return () => {
       clearTimeout(timeout);
       observerRef.current?.disconnect();
     };
-  }, []);
+  }, [isLoaded]);
 
   return (
     <motion.nav

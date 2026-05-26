@@ -23,7 +23,7 @@ export default function Home() {
         className="transition-opacity duration-1000"
         style={{ opacity: isLoaded ? 1 : 0 }}
       >
-        <Navbar />
+        <Navbar isLoaded={isLoaded} />
 
         {/* Hero Scrollytelling Canvas */}
         <ScrollyCanvas />
