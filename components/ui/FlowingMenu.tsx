@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 
@@ -174,7 +176,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         style={{ backgroundColor: marqueeBgColor }}
       >
         <div className="h-full w-fit flex" ref={marqueeInnerRef}>
-          {[...Array(repetitions)].map((_, idx) => (
+          {Array.from({ length: repetitions }, (_, idx) => (
             <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
               <span className="whitespace-nowrap uppercase font-normal text-2xl md:text-4xl leading-[1] px-[1vw]">{text}</span>
               <div

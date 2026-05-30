@@ -37,14 +37,21 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
           <h1
-            className={`text-7xl sm:text-9xl md:text-[10rem] leading-none mb-4 ${signatureFont.className}`}
+            className={`text-[12vw] sm:text-7xl md:text-9xl lg:text-[10rem] leading-none mb-4 ${signatureFont.className}`}
             style={{ textShadow: "0 0 60px rgba(255,255,255,0.15)" }}
           >
             Poojyanth M.
           </h1>
-          <p className="text-xs sm:text-sm tracking-[0.45em] text-white/80 uppercase font-light mt-6">
+          {/* Desktop: single line */}
+          <p className="hidden sm:block text-xs sm:text-sm tracking-[0.45em] text-white/80 uppercase font-light mt-6">
             Full Stack Developer &nbsp;·&nbsp; AI & ML Engineer &nbsp;·&nbsp; React & React Native
           </p>
+          {/* Mobile: three lines with reduced tracking */}
+          <div className="flex sm:hidden flex-col items-center gap-1.5 mt-5">
+            <span className="text-[10px] tracking-[0.2em] text-white/70 uppercase font-light">Full Stack Developer</span>
+            <span className="text-[10px] tracking-[0.2em] text-white/70 uppercase font-light">AI & ML Engineer</span>
+            <span className="text-[10px] tracking-[0.2em] text-white/70 uppercase font-light">React & React Native</span>
+          </div>
         </motion.div>
 
         {/* Section 2 — Statement */}

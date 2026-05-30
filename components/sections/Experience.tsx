@@ -57,10 +57,10 @@ function ExperienceCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full h-full"
+      className="w-full"
     >
       <BorderGlow
-        className="w-full h-full p-8 text-left transition-colors duration-500"
+        className="w-full p-5 md:p-8 text-left transition-colors duration-500"
         backgroundColor="#101010"
         edgeSensitivity={40}
         glowColor="0 0 100"
@@ -68,7 +68,7 @@ function ExperienceCard({
         animated={false}
         borderRadius={20}
       >
-        <div className="flex flex-col h-full gap-6">
+        <div className="flex flex-col gap-5 md:gap-6">
           {/* Header */}
           <div>
             <h3 className="text-xl md:text-2xl font-light text-white tracking-wide mb-2">
