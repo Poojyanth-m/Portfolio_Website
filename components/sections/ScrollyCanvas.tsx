@@ -31,8 +31,10 @@ export default function ScrollyCanvas() {
     const img = imagesRef.current[index];
     if (!img || !img.complete || img.naturalWidth === 0) return;
 
-    const cw = canvas.width;
-    const ch = canvas.height;
+    // Use CSS pixel dimensions (context is already scaled by DPR)
+    const dpr = window.devicePixelRatio || 1;
+    const cw = canvas.width / dpr;
+    const ch = canvas.height / dpr;
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
 
@@ -53,13 +55,15 @@ export default function ScrollyCanvas() {
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
   };
 
-  // Resize canvas to match device pixel ratio
+  // Resize canvas using actual CSS dimensions (offsetWidth/Height respects svh on mobile)
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
     const ctx = canvas.getContext("2d");
     if (ctx) ctx.scale(dpr, dpr);
     drawFrame(Math.round(currentFrameRef.current));
