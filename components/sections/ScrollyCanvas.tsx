@@ -136,7 +136,7 @@ export default function ScrollyCanvas() {
   return (
     <div ref={containerRef} className="relative h-[500vh] w-full bg-black">
       {/* Sticky fullscreen canvas */}
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
+      <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden">
         <SplashCursor
           SIM_RESOLUTION={64}
           DYE_RESOLUTION={1024}

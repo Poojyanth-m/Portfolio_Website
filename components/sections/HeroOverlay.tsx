@@ -28,17 +28,17 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
   return (
     <div className="absolute top-0 left-0 w-full h-[500vh] pointer-events-none z-10">
 
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
+      <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden">
 
         {/* Section 1 — Name & Title */}
         <motion.div
           style={{ opacity: opacity1, scale: scale1, y: y1, willChange: "transform, opacity" }}
-          className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
+          className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
           <h1
             className={`leading-none ${signatureFont.className}`}
             style={{
-              fontSize: "clamp(1.8rem, 9.5vw, 10rem)",
+              fontSize: "clamp(2.4rem, 12vw, 10rem)",
               textShadow: "0 0 60px rgba(255,255,255,0.15)",
             }}
           >
@@ -50,39 +50,39 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
             Full Stack Developer &nbsp;·&nbsp; AI & ML Engineer &nbsp;·&nbsp; React & React Native
           </p>
 
-          {/* Mobile subtitle — stacked, tighter tracking */}
-          <div className="flex sm:hidden flex-col items-center gap-1.5 mt-4">
-            <span className="text-[10px] tracking-[0.18em] text-white/65 uppercase font-light">Full Stack Developer</span>
-            <span className="text-[10px] tracking-[0.18em] text-white/65 uppercase font-light">AI & ML Engineer</span>
-            <span className="text-[10px] tracking-[0.18em] text-white/65 uppercase font-light">React & React Native</span>
+          {/* Mobile subtitle — stacked */}
+          <div className="flex sm:hidden flex-col items-center gap-2 mt-5">
+            <span className="text-[11px] tracking-[0.22em] text-white/70 uppercase font-light">Full Stack Developer</span>
+            <span className="text-[11px] tracking-[0.22em] text-white/70 uppercase font-light">AI & ML Engineer</span>
+            <span className="text-[11px] tracking-[0.22em] text-white/70 uppercase font-light">React & React Native</span>
           </div>
         </motion.div>
 
         {/* Section 2 — Statement */}
         <motion.div
           style={{ opacity: opacity2, scale: scale2, y: y2, willChange: "transform, opacity" }}
-          className="absolute inset-0 flex items-center justify-start px-6 sm:px-8 md:px-24 lg:px-32"
+          className="absolute inset-0 flex items-center justify-start px-8 sm:px-10 md:px-24 lg:px-32"
         >
           <div className="w-full max-w-2xl text-left">
             <h2
-              className="font-semibold leading-[1.15] tracking-tight text-white"
-              style={{ fontSize: "clamp(1.5rem, 5vw, 3.75rem)" }}
+              className="font-semibold leading-[1.2] tracking-tight text-white"
+              style={{ fontSize: "clamp(1.6rem, 6.5vw, 3.75rem)" }}
             >
               Building products that hide complexity behind simplicity.
             </h2>
-            <div className="mt-6 w-10 h-[1px] bg-white/25" />
+            <div className="mt-5 w-10 h-[1px] bg-white/25" />
           </div>
         </motion.div>
 
         {/* Section 3 — Manifesto */}
         <motion.div
           style={{ opacity: opacity3, scale: scale3, y: y3, willChange: "transform, opacity" }}
-          className="absolute inset-0 flex items-center justify-end px-6 sm:px-8 md:px-24 lg:px-32"
+          className="absolute inset-0 flex items-center justify-center sm:justify-end px-8 sm:px-10 md:px-24 lg:px-32"
         >
-          <div className="w-full max-w-3xl text-right flex flex-col items-end">
+          <div className="w-full max-w-3xl text-center sm:text-right flex flex-col items-center sm:items-end">
             <h2
-              className="font-semibold leading-[1.2] tracking-tight text-white/90"
-              style={{ fontSize: "clamp(1.25rem, 4.5vw, 3rem)" }}
+              className="font-semibold leading-[1.25] tracking-tight text-white/90"
+              style={{ fontSize: "clamp(1.4rem, 5.5vw, 3rem)" }}
             >
               Because great engineering
               <br />
@@ -97,7 +97,7 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
                 should feel invisible.
               </span>
             </h2>
-            <div className="mt-6 w-10 h-[1px] bg-white/25" />
+            <div className="mt-5 w-10 h-[1px] bg-white/25" />
           </div>
         </motion.div>
 
