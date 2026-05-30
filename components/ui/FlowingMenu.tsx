@@ -89,9 +89,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
       const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part') as HTMLElement;
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
+      // Guard: element may be hidden (display:none) giving offsetWidth=0 → division by zero → Infinity
+      if (contentWidth <= 0) return;
       const viewportWidth = window.innerWidth;
       const needed = Math.ceil(viewportWidth / contentWidth) + 2;
-      setRepetitions(Math.max(4, needed));
+      setRepetitions(Math.min(Math.max(4, needed), 30));
     };
 
     calculateRepetitions();
@@ -176,7 +178,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         style={{ backgroundColor: marqueeBgColor }}
       >
         <div className="h-full w-fit flex" ref={marqueeInnerRef}>
-          {Array.from({ length: repetitions }, (_, idx) => (
+          {Array.from({ length: Math.min(repetitions, 30) }, (_, idx) => (
             <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
               <span className="whitespace-nowrap uppercase font-normal text-2xl md:text-4xl leading-[1] px-[1vw]">{text}</span>
               <div
