@@ -65,16 +65,13 @@ export default function ScrollyCanvas() {
     drawFrame(Math.round(currentFrameRef.current));
   };
 
-  // Main RAF loop — interpolate toward target
+  // Main RAF loop — snap directly to target frame, no lerp lag
   useEffect(() => {
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const LERP_FACTOR = 0.12;
-
     const loop = () => {
-      const diff = targetFrameRef.current - currentFrameRef.current;
-      if (Math.abs(diff) > 0.1) {
-        currentFrameRef.current = lerp(currentFrameRef.current, targetFrameRef.current, LERP_FACTOR);
-        drawFrame(Math.round(currentFrameRef.current));
+      const target = Math.round(targetFrameRef.current);
+      if (target !== Math.round(currentFrameRef.current)) {
+        currentFrameRef.current = target;
+        drawFrame(target);
       }
       rafRef.current = requestAnimationFrame(loop);
     };

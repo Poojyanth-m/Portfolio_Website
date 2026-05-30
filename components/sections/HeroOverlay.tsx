@@ -1,34 +1,28 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
+import { MotionValue } from "framer-motion";
 import { Pinyon_Script } from "next/font/google";
-import { useRef } from "react";
 
-// Same signature font as the navbar logo — consistent brand identity
 const signatureFont = Pinyon_Script({
   subsets: ["latin"],
   weight: ["400"],
 });
 
-import { MotionValue } from "framer-motion";
-
 export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
   // --- SECTION 1: Name & Title (0 to 100vh) ---
   const opacity1 = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const scale1 = useTransform(scrollYProgress, [0, 0.2], [1, 1.05]);
-  const blur1 = useTransform(scrollYProgress, [0, 0.15], ["blur(0px)", "blur(12px)"]);
   const y1 = useTransform(scrollYProgress, [0, 0.2], [0, -150]);
 
   // --- SECTION 2: "Building products..." (100vh to 200vh) ---
   const opacity2 = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], [0, 1, 1, 0]);
   const scale2 = useTransform(scrollYProgress, [0.1, 0.4], [0.9, 1.05]);
-  const blur2 = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
   const y2 = useTransform(scrollYProgress, [0.1, 0.4], [150, -150]);
 
   // --- SECTION 3: "Because great engineering..." (200vh to 300vh) ---
   const opacity3 = useTransform(scrollYProgress, [0.35, 0.45, 0.55, 0.65], [0, 1, 1, 0]);
   const scale3 = useTransform(scrollYProgress, [0.35, 0.65], [0.9, 1.05]);
-  const blur3 = useTransform(scrollYProgress, [0.35, 0.45, 0.55, 0.65], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
   const y3 = useTransform(scrollYProgress, [0.35, 0.65], [150, -150]);
 
   return (
@@ -39,7 +33,7 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
 
         {/* Section 1 — Name & Title */}
         <motion.div
-          style={{ opacity: opacity1, scale: scale1, filter: blur1, y: y1 }}
+          style={{ opacity: opacity1, scale: scale1, y: y1, willChange: "transform, opacity" }}
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
           <h1
@@ -55,7 +49,7 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
 
         {/* Section 2 — Statement */}
         <motion.div
-          style={{ opacity: opacity2, scale: scale2, filter: blur2, y: y2 }}
+          style={{ opacity: opacity2, scale: scale2, y: y2, willChange: "transform, opacity" }}
           className="absolute inset-0 flex items-center justify-start px-8 md:px-24 lg:px-32"
         >
           <div className="max-w-2xl text-left">
@@ -68,7 +62,7 @@ export default function HeroOverlay({ scrollYProgress }: { scrollYProgress: Moti
 
         {/* Section 3 — Manifesto */}
         <motion.div
-          style={{ opacity: opacity3, scale: scale3, filter: blur3, y: y3 }}
+          style={{ opacity: opacity3, scale: scale3, y: y3, willChange: "transform, opacity" }}
           className="absolute inset-0 flex items-center justify-end px-8 md:px-24 lg:px-32"
         >
           <div className="max-w-3xl text-right flex flex-col items-end">

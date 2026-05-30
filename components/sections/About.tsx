@@ -276,7 +276,7 @@ export default function About() {
           stackPosition="12%"
           scaleEndPosition="5%"
           baseScale={0.82}
-          blurAmount={1.2}
+          blurAmount={0}
           className="w-full"
         >
           {Object.entries(skills).map(([category, data], i) => (

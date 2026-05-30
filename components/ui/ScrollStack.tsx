@@ -20,28 +20,17 @@ export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({ children, item
 interface ScrollStackProps {
   className?: string;
   children: ReactNode;
-  /** Natural gap between cards (px) */
   itemDistance?: number;
-  /** Scale reduction per level stacked behind (e.g. 0.03 → each buried card is 3% smaller) */
   itemScale?: number;
-  /** Vertical peek distance between stacked cards (px) */
   itemStackDistance?: number;
-  /** Where the card pins from viewport top — CSS % or px string */
   stackPosition?: string;
-  /** Where scale animation completes — CSS % or px string */
   scaleEndPosition?: string;
-  /** Minimum scale (deepest buried card) */
   baseScale?: number;
-  /** Max blur on buried cards (px) */
   blurAmount?: number;
   useWindowScroll?: boolean;
   onStackComplete?: () => void;
 }
 
-/**
- * Returns the element's true document-relative top via offsetTop traversal.
- * This is NOT affected by CSS transforms — the only stable measurement.
- */
 function getDocumentTop(el: HTMLElement): number {
   let top = 0;
   let node: HTMLElement | null = el;
@@ -74,26 +63,21 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLElement[]>([]);
-  // Cached natural (pre-transform) document tops — never re-read in scroll loop
   const naturalTopsRef = useRef<number[]>([]);
   const rafRef = useRef<number | null>(null);
-  const scheduledRef = useRef(false);
+  const lastScrollYRef = useRef<number>(-1);
   const stackCompletedRef = useRef(false);
 
-  // ─── Core animation loop (only writes, never reads layout) ────────────────
-  const applyTransforms = useCallback(() => {
-    scheduledRef.current = false;
+  const applyTransforms = useCallback((scrollY: number) => {
     const cards = cardsRef.current;
     const tops = naturalTopsRef.current;
     if (!cards.length || !tops.length) return;
 
-    const scrollY = window.scrollY;
     const vh = window.innerHeight;
     const stackPx = parsePx(stackPosition, vh);
     const scaleEndPx = parsePx(scaleEndPosition, vh);
     const n = cards.length;
 
-    // The last card's pin-start marks the end of the whole stack sequence
     const lastPinStart = tops[n - 1] - stackPx - (n - 1) * itemStackDistance;
     const pinEnd = lastPinStart + vh * 0.5;
 
@@ -101,7 +85,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       const cardTop = tops[i];
       const pinStart = cardTop - stackPx - i * itemStackDistance;
 
-      // ── Translate Y (sticky pin) ──────────────────────────────────────────
       let ty = 0;
       if (scrollY >= pinStart && scrollY <= pinEnd) {
         ty = scrollY - cardTop + stackPx + i * itemStackDistance;
@@ -109,7 +92,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         ty = pinEnd - cardTop + stackPx + i * itemStackDistance;
       }
 
-      // ── Scale (shrink as subsequent cards stack over this one) ────────────
       let scale = 1.0;
       for (let j = i + 1; j < n; j++) {
         const jPinStart = tops[j] - stackPx - j * itemStackDistance;
@@ -118,50 +100,48 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         const progress = Math.min(1, Math.max(0, (scrollY - jPinStart) / range));
         scale -= progress * itemScale;
       }
-      // Floor: the deepest card never goes below baseScale
       scale = Math.max(scale, baseScale + i * itemScale);
 
-      // ── Blur (optional) ───────────────────────────────────────────────────
-      let filterStr = '';
-      if (blurAmount && i < n - 1) {
-        const span = 1 - (baseScale + i * itemScale);
-        const blurProgress = span > 0 ? Math.min(1, Math.max(0, (1 - scale) / span)) : 0;
-        if (blurProgress > 0.01) {
-          filterStr = `blur(${Math.round(blurProgress * blurAmount * 10) / 10}px)`;
-        }
-      }
-
-      // Sub-pixel rounding prevents half-pixel oscillation
+      // Round to avoid sub-pixel oscillation
       const tyR = Math.round(ty * 10) / 10;
       const scR = Math.round(scale * 100000) / 100000;
 
-      card.style.transform = `translate3d(0, ${tyR}px, 0) scale(${scR})`;
-      card.style.filter = filterStr;
+      card.style.transform = `translate3d(0,${tyR}px,0) scale(${scR})`;
     });
 
-    // onStackComplete callback
     if (onStackComplete) {
       const lastPinStartFinal = tops[n - 1] - parsePx(stackPosition, window.innerHeight) - (n - 1) * itemStackDistance;
       const inStack = scrollY >= lastPinStartFinal && scrollY <= lastPinStartFinal + window.innerHeight * 0.5;
       if (inStack && !stackCompletedRef.current) { stackCompletedRef.current = true; onStackComplete(); }
       if (!inStack && stackCompletedRef.current) { stackCompletedRef.current = false; }
     }
-  }, [itemScale, itemStackDistance, stackPosition, scaleEndPosition, baseScale, blurAmount, onStackComplete]);
+  }, [itemScale, itemStackDistance, stackPosition, scaleEndPosition, baseScale, onStackComplete]);
 
-  const scheduleUpdate = useCallback(() => {
-    if (scheduledRef.current) return;
-    scheduledRef.current = true;
-    rafRef.current = requestAnimationFrame(applyTransforms);
-  }, [applyTransforms]);
-
-  // ─── Measure natural positions via offsetTop (transform-immune) ───────────
   const measureCards = useCallback(() => {
     const cards = cardsRef.current;
     if (!cards.length) return;
+    // Reset transforms before measuring so offsetTop is clean
+    cards.forEach(card => { card.style.transform = ''; });
     naturalTopsRef.current = cards.map(getDocumentTop);
   }, []);
 
-  // ─── Boot ──────────────────────────────────────────────────────────────────
+  // Continuous RAF loop — runs every display frame, never misses a scroll tick
+  useLayoutEffect(() => {
+    const loop = () => {
+      const scrollY = window.scrollY;
+      // Only recalculate when scroll position has actually changed
+      if (scrollY !== lastScrollYRef.current) {
+        lastScrollYRef.current = scrollY;
+        applyTransforms(scrollY);
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [applyTransforms]);
+
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
@@ -169,39 +149,39 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     const cards = Array.from(wrapper.querySelectorAll<HTMLElement>('.scroll-stack-card'));
     cardsRef.current = cards;
 
-    // Apply spacing + transform origin
     cards.forEach((card, i) => {
       card.style.transformOrigin = 'top center';
+      card.style.willChange = 'transform';
       if (i < cards.length - 1) card.style.marginBottom = `${itemDistance}px`;
     });
 
-    // Measure after first paint (layout is settled)
+    // Measure after layout settles
     const raf = requestAnimationFrame(() => {
       measureCards();
-      applyTransforms();
+      applyTransforms(window.scrollY);
     });
-
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
 
     let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { measureCards(); applyTransforms(); }, 150);
+      resizeTimer = setTimeout(() => {
+        measureCards();
+        lastScrollYRef.current = -1; // force recompute
+      }, 150);
     };
     window.addEventListener('resize', onResize, { passive: true });
 
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(resizeTimer);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', onResize);
+      cards.forEach(card => { card.style.transform = ''; card.style.marginBottom = ''; });
       cardsRef.current = [];
       naturalTopsRef.current = [];
-      scheduledRef.current = false;
+      lastScrollYRef.current = -1;
       stackCompletedRef.current = false;
     };
-  }, [itemDistance, measureCards, applyTransforms, scheduleUpdate]);
+  }, [itemDistance, measureCards, applyTransforms]);
 
   return (
     <div
